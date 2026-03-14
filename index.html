@@ -203,29 +203,91 @@ body::after {
 .f.d1{transition-delay:.1s} .f.d2{transition-delay:.22s} .f.d3{transition-delay:.35s}
 .f.d4{transition-delay:.5s}  .f.d5{transition-delay:.65s} .f.d6{transition-delay:.82s}
 
-/* COVER */
-#r0 { padding:0; min-height:100svh; display:flex; flex-direction:column; justify-content:flex-end; }
-.hero { position:absolute; inset:0; overflow:hidden; }
+/* COVER -  compact card layout */
+#r0 {
+  padding:calc(5rem + var(--safe-t)) 0 calc(2rem + var(--safe-b));
+  min-height:unset;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0;
+  background:var(--bg);
+}
+
+/* photo block -  takes natural height, full width */
+.hero {
+  position:relative;
+  width:calc(100% - 3rem);
+  max-width:320px;
+  margin:0 auto;
+  flex-shrink:0;
+  overflow:hidden;
+  border-radius:20px;
+  box-shadow:
+    0 0 0 1px rgba(192,57,43,.28),
+    0 28px 80px rgba(0,0,0,.8),
+    0 0 50px rgba(192,57,43,.08);
+}
 .hero-img {
-  width:100%; height:100%; object-fit:cover; object-position:center 25%;
-  filter:brightness(.55) contrast(1.2) saturate(.75);
-  transform:scale(1.04); transition:transform 9s ease;
+  width:100%;
+  height:auto;
+  display:block;
+  filter:brightness(.8) contrast(1.08) saturate(.88);
+  transform:scale(1.03);
+  transition:transform 9s ease;
+  border-radius:20px;
 }
 .hero-img.rdy { transform:scale(1); }
-.hg1 { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(9,9,13,.15) 0%, rgba(9,9,13,0) 20%, rgba(9,9,13,0) 45%, rgba(9,9,13,.65) 72%, rgba(9,9,13,1) 100%); }
-.hg2 { position:absolute; inset:0; background:linear-gradient(to right, rgba(9,9,13,.6) 0%, transparent 55%); }
-.hg3 { position:absolute; inset:0; background:linear-gradient(160deg, rgba(80,10,10,.3) 0%, transparent 55%); mix-blend-mode:multiply; }
+
+/* overlays on top of photo */
+.hg1 {
+  position:absolute; inset:0; border-radius:20px;
+  background:linear-gradient(to bottom,
+    rgba(9,9,13,.1) 0%,
+    transparent      30%,
+    transparent      60%,
+    rgba(9,9,13,.6) 100%);
+}
+.hg2 {
+  position:absolute; inset:0;
+  background:linear-gradient(to right, rgba(9,9,13,.45) 0%, transparent 50%);
+}
+.hg3 {
+  position:absolute; inset:0;
+  background:linear-gradient(160deg, rgba(80,10,10,.25) 0%, transparent 55%);
+  mix-blend-mode:multiply;
+}
 .hdots {
   position:absolute; inset:0; pointer-events:none;
   background-image:radial-gradient(circle, rgba(255,255,255,.04) 1px, transparent 1px);
   background-size:22px 22px;
-  mask-image:linear-gradient(to bottom, transparent 45%, rgba(0,0,0,.55) 100%);
-  -webkit-mask-image:linear-gradient(to bottom, transparent 45%, rgba(0,0,0,.55) 100%);
+  mask-image:linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.5) 100%);
+  -webkit-mask-image:linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.5) 100%);
 }
-.hmotion { position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,255,255,.008) 3px, rgba(255,255,255,.008) 4px); }
-.hrails  { position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(90deg, transparent 0px, transparent 80px, rgba(192,57,43,.06) 80px, rgba(192,57,43,.06) 81px); }
+.hmotion {
+  position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,255,255,.008) 3px, rgba(255,255,255,.008) 4px);
+}
+.hrails {
+  position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(90deg, transparent 0px, transparent 80px, rgba(192,57,43,.06) 80px, rgba(192,57,43,.06) 81px);
+}
 
-.cov-body { position:relative; z-index:2; padding:2.5rem 1.5rem calc(6.5rem + var(--safe-b)); }
+/* red corner accent bottom-right of photo */
+.hero::after {
+  content:'';
+  position:absolute; bottom:0; left:0; right:0; height:3px;
+  background:linear-gradient(to right, transparent, var(--red2) 40%, var(--red3) 60%, transparent);
+  opacity:.7;
+}
+
+/* content block sits below photo */
+.cov-body {
+  position:relative; z-index:2;
+  width:100%;
+  padding:1.8rem 1.5rem calc(6.5rem + var(--safe-b));
+  max-width:360px;
+}
 .cov-eye { display:inline-flex; align-items:center; gap:.65rem; margin-bottom:1.2rem; }
 .cov-el  { width:20px; height:1px; background:var(--red2); opacity:.7; }
 .cov-et  { font-family:'Shippori Mincho B1',serif; font-size:.62rem; letter-spacing:.45em; text-transform:uppercase; color:var(--red2); }
@@ -236,9 +298,9 @@ body::after {
 }
 .cov-hjp { display:block; font-size:.21em; color:var(--red2); letter-spacing:.4em; margin-top:.65em; font-weight:400; text-shadow:0 0 22px rgba(192,57,43,.7); }
 .cov-desc { font-family:'Caveat',cursive; font-size:1.3rem; font-weight:500; color:rgba(228,224,216,.62); line-height:1.9; max-width:320px; margin:.9rem 0 1.8rem; }
-.cov-stamp { position:absolute; top:calc(var(--safe-t)+5rem); right:1.5rem; z-index:3; writing-mode:vertical-rl; font-family:'Shippori Mincho B1',serif; font-size:.58rem; letter-spacing:.38em; color:rgba(192,57,43,.4); text-transform:uppercase; }
-.cov-corner { position:absolute; top:calc(var(--safe-t)+4.2rem); left:1.5rem; z-index:3; width:38px; height:38px; border-top:1px solid rgba(192,57,43,.45); border-left:1px solid rgba(192,57,43,.45); border-radius:4px 0 0 0; }
-.cov-corner::after { content:''; position:absolute; bottom:-38px; right:-38px; width:38px; height:38px; border-bottom:1px solid rgba(192,57,43,.45); border-right:1px solid rgba(192,57,43,.45); border-radius:0 0 4px 0; }
+.cov-stamp { position:absolute; top:calc(var(--safe-t)+5rem); right:1.5rem; z-index:10; writing-mode:vertical-rl; font-family:'Shippori Mincho B1',serif; font-size:.58rem; letter-spacing:.38em; color:rgba(192,57,43,.55); text-transform:uppercase; }
+.cov-corner { position:absolute; top:calc(var(--safe-t)+4.2rem); left:1.5rem; z-index:10; width:38px; height:38px; border-top:1px solid rgba(192,57,43,.5); border-left:1px solid rgba(192,57,43,.5); border-radius:4px 0 0 0; }
+.cov-corner::after { content:''; position:absolute; bottom:-38px; right:-38px; width:38px; height:38px; border-bottom:1px solid rgba(192,57,43,.5); border-right:1px solid rgba(192,57,43,.5); border-radius:0 0 4px 0; }
 .cov-cue { display:inline-flex; flex-direction:column; gap:.4rem; align-items:flex-start; }
 .cov-ct  { font-family:'Shippori Mincho B1',serif; font-size:.6rem; letter-spacing:.4em; text-transform:uppercase; color:rgba(228,224,216,.3); }
 .cov-cl  { width:1px; height:44px; background:linear-gradient(to bottom, var(--red2), transparent); animation:cdrop 2.2s ease-in-out infinite; }
@@ -373,14 +435,15 @@ body::after {
 <!-- ═══════════════════════════════════════
      MUQOVA · ROOM 0
 ═══════════════════════════════════════ -->
-<section class="room" id="r0">
+<section class="room" id="r0" style="position:relative;">
+  <!-- nav-height spacer so stamp/corner sit below nav bar -->
+  <div class="cov-corner f"></div>
+  <div class="cov-stamp f">Bob · 一 · Yorug'lik</div>
   <div class="hero">
     <img class="hero-img" src="1.png" alt="U metroda" id="hImg">
     <div class="hg1"></div><div class="hg2"></div><div class="hg3"></div>
     <div class="hdots"></div><div class="hmotion"></div><div class="hrails"></div>
   </div>
-  <div class="cov-corner f"></div>
-  <div class="cov-stamp f">Bob · 一 · Yorug'lik</div>
   <div class="cov-body">
     <div class="cov-eye f d1">
       <div class="cov-el"></div>
